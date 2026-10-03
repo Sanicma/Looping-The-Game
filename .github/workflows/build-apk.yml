@@ -17,6 +17,13 @@ jobs:
           java-version: 17
       - run: npm install
       - run: npx cap add android
+      - name: Generar íconos y pantalla de inicio
+        continue-on-error: true
+        run: npx -y @capacitor/assets generate --android
+      - name: Ícono LED de la app
+        run: |
+          pip install pillow
+          python3 tools/make_icons.py android
       - name: Forzar orientación vertical
         run: sed -i 's/<activity/<activity android:screenOrientation="portrait"/' android/app/src/main/AndroidManifest.xml
       - run: npx cap sync android
